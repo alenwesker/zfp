@@ -95,13 +95,6 @@ protected:
     deep_copy(a);
   }
 
-  // protected destructor (cannot delete array through base class pointer)
-  ~array()
-  {
-    free();
-    zfp_stream_close(stream);
-  }
-
   // assignment operator--performs a deep copy
   array& operator=(const array& a)
   {
@@ -110,6 +103,13 @@ protected:
   }
 
 public:
+  // public virtual destructor (can delete array through base class pointer)
+  virtual ~array()
+  {
+    free();
+    zfp_stream_close(stream);
+  }
+
   // rate in bits per value
   double rate() const { return double(blkbits) / blkvals; }
 
