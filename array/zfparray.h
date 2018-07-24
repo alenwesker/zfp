@@ -163,7 +163,7 @@ protected:
     bytes = blocks * blksize;
     size_t totalBytes = bytes + header_size();
 
-    reallocate_aligned(data, totalBytes, 0x100u);
+    zfp::reallocate_aligned(data, totalBytes, 0x100u);
     if (clear)
       std::fill(data, data + totalBytes, 0);
     stream_close(stream->stream);
@@ -182,9 +182,9 @@ protected:
     stream_close(stream->stream);
     zfp_stream_set_bit_stream(stream, 0);
     bytes = 0;
-    deallocate_aligned(data);
+    zfp::deallocate_aligned(data);
     data = 0;
-    deallocate(shape);
+    zfp::deallocate(shape);
     shape = 0;
   }
 
@@ -207,7 +207,7 @@ protected:
     bytes = a.bytes;
 
     // copy dynamically allocated data
-    clone_aligned(data, a.data, bytes + header_size(), 0x100u);
+    zfp::clone_aligned(data, a.data, bytes + header_size(), 0x100u);
     if (stream) {
       if (stream->stream)
         stream_close(stream->stream);
@@ -216,7 +216,7 @@ protected:
     stream = zfp_stream_open(0);
     *stream = *a.stream;
     zfp_stream_set_bit_stream(stream, stream_open(data, bytes + header_size()));
-    clone(shape, a.shape, blocks);
+    zfp::clone(shape, a.shape, blocks);
   }
 
   size_t header_size_bits() const
